@@ -53,5 +53,5 @@ to build a "Story" feature similar to those found in popular social media platfo
 
 ## Screenshot
 
-![Project Screenshot](https://github.com/sara-ahmed593/Multi-Step-Form/blob/357b34a1e66c6135ca148c29eab60fcac8926df1/Screenshot%20.png)
+![Project Screenshot](https://github.com/sara-ahmed593/24hr-Story-Feature/blob/7479a456646ed420fd9e1a62a7efde82871890ce/screenshot.png)
 
