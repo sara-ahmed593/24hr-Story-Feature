@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stories</title>
+    <link rel="stylesheet" href="./src/css/style.css">
+</head>
+
+<body>
+    <main>
+        <div class="card-container">
+            <h1 class="title">24-Hour Stories</h1>
+
+
+
+            <div class="stories-card">
+
+                <div class="story-item">
+                    <div class="story-circle" id="add-btn">
+                        <div class="story-icon">+</div>
+                        <input type="file" id="file-input" accept="image/*" hidden />
+                    </div>
+                    <div class="story-label">Add Story</div>
+
+                </div>
+
+            </div>
+
+
+            <div id="story-viewer" class="story-viewer">
+                <div id="progress-bar-container" class="progressbar-container">
+                    <div id="progress-bar" class="progress-bar"></div>
+                </div>
+
+                <button id="close-viewer" class="close-viewer">
+                    X
+                </button>
+                <button id="delete-btn" class="delete-btn">
+                    Delete
+                </button>
+
+                <div class="viewer-control prev-story" id="prev-story"> </div>
+
+                <img id="viewer-image" class="viewer-image" src="" alt="Story">
+
+                <div class="viewer-control next-story" id="next-story"> </div>
+            </div>
+
+
+        </div>
+
+    </main>
+    <script src="./src/js/script.js"></script>
+</body>
+
+</html>

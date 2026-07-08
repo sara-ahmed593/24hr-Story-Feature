@@ -1,0 +1,223 @@
+@use './variables';
+
+
+.card-container {
+    padding: 1rem 1.5rem;
+    margin: 1rem auto;
+    background-color: variables.$bg-main ;
+    width: 100%;
+    max-width: 1500px;
+    border-radius: 6px;
+    height: 100vh;
+
+
+
+    .title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 2rem;
+
+
+    }
+
+    .stories-card {
+        background: variables.$bg-white;
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 32px;
+        box-shadow: 0 4px 4px black;
+        display: flex;
+        gap: 5px;
+        overflow-y: scroll;
+
+        .story-item {
+            display: inline-block;
+            margin: 0 16px;
+            text-align: center;
+
+            .story-circle {
+                position: relative;
+                width: 72px;
+                height: 72px;
+                border-radius: 50%;
+                padding: 2px;
+                border: 4px solid variables.$bg-circle;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                margin-bottom: 10px;
+                transition: 0.3s;
+
+                .story-icon {
+                    font-weight: 800;
+                    font-size: 2.5rem;
+                }
+
+                .story-image {
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 50%;
+                    object-fit: cover;
+                }
+
+                &:hover {
+                    transform: scale(1.2);
+                }
+
+
+            }
+
+            .story-label {
+                font-weight: 200;
+                font-size: 1.5rem;
+            }
+        }
+    }
+
+
+
+
+    .story-viewer {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: variables.$bg-light-dark;
+        backdrop-filter: blur(20px);
+
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 1;
+
+
+
+        .progressbar-container {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            height: 4px;
+            background: variables.$bg-progress;
+            border-radius: 2px;
+            overflow: hidden;
+            z-index: 2;
+
+            .progress-bar {
+                height: 100%;
+                width: 0%;
+                background: variables.$bg-white;
+                border-radius: 2px;
+                transition: 0.1s linear;
+
+
+
+            }
+
+
+        }
+
+
+
+        .close-viewer {
+            position: absolute;
+            top: 40px;
+            right: 30px;
+            background: variables.$bg-white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px;
+            color: variables.$bg-black;
+            font-size: 22px;
+            cursor: pointer;
+            z-index: 2;
+            transition: 0.3s;
+
+            &:hover {
+                background: #dc3545;
+                color: variables.$bg-white;
+                transform: scale(1.1);
+            }
+        }
+
+        .delete-btn {
+            position: absolute;
+            top: 40px;
+            left: 30px;
+            background: variables.$bg-white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px;
+            color: variables.$bg-black;
+            font-size: 22px;
+            cursor: pointer;
+            z-index: 2;
+            transition: 0.3s;
+
+            &:hover {
+                background: #dc3545;
+                color: variables.$bg-white;
+                transform: scale(1.1);
+            }
+        }
+
+
+
+        .viewer-image {
+            max-width: 100%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 8px;
+            z-index: 2;
+
+        }
+
+
+        .viewer-control {
+            position: absolute;
+            bottom: 0;
+            height: 90%;
+            width: 15%;
+            display: flex;
+            align-items: center;
+            color: transparent;
+            font-size: 28px;
+            cursor: pointer;
+            user-select: none;
+            z-index: 3;
+        }
+
+        .prev-story {
+            right: 0;
+            justify-content: flex-start;
+            padding-left: 10px;
+        }
+
+        .next-story {
+            left: 0;
+            justify-content: flex-end;
+            padding-right: 10px;
+        }
+
+    }
+
+
+
+
+
+
+
+}
+
+@keyframes storyProgress {
+    from {
+        width: 0%;
+    }
+
+    to {
+        width: 100%;
+    }
+}
