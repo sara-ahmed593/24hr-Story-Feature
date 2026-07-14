@@ -13,12 +13,15 @@ const closeBtn = document.getElementById("close-viewer");
 
 
 let currentStory = null;
-let timer
+let timer;
 
 
 let stories = JSON.parse(localStorage.getItem("stories")) || [];
 
+const duration = 3000;
 
+let startTime;
+let remainingTime = duration;
 
 
 //add button
@@ -35,6 +38,9 @@ function createStoryElement(story) {
 
     const storyCircle = document.createElement("div");
     storyCircle.classList.add("story-circle");
+    if (story.seen) {
+        storyCircle.classList.add("seen");
+    }
 
     const img = document.createElement("img");
     img.src = story.image;
@@ -67,7 +73,9 @@ function addStory(image, time, id) {
     const story = {
         id,
         image,
-        time
+        time,
+        seen: false
+
     };
 
     createStoryElement(story);
@@ -93,16 +101,28 @@ fileInput.addEventListener("change", (e) => {
     reader.onload = (event) => {
         const imgSrc = event.target.result;
 
-        const time = new Date().toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit"
-        });
+        const img = new Image();
 
-        const id = Date.now()
+        img.onload = () => {
+            if (img.width > 1080 || img.height > 1920) {
+                alert("Image dimensions must not exceed 1080 × 1920 pixels.");
+                return;
+            }
 
-        addStory(imgSrc, time, id);
 
+            const time = new Date().toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: false
+            });
+
+            const id = Date.now()
+
+            addStory(imgSrc, time, id);
+        }
+        img.src = imgSrc;
     }
+
     reader.readAsDataURL(file);
 });
 
@@ -140,10 +160,9 @@ deleteBtn.addEventListener("click", () => {
 // progress bar
 function startProgress() {
 
-    progress.style.animation = 'none';
+    progress.classList.remove("animate");
     progress.offsetWidth;
-    progress.style.animation = "storyProgress 3s linear forwards";
-
+    progress.classList.add("animate");
 
 }
 
@@ -152,7 +171,7 @@ function startProgress() {
 closeBtn.addEventListener("click", closeStory)
 
 function closeStory() {
-    viewer.style.display = "none";
+    viewer.classList.add("hidden")
     clearTimeout(timer);
 }
 
@@ -161,10 +180,16 @@ function closeStory() {
 let displayindex = 0;
 function viewstory(index) {
     displayindex = index;
-    viewer.style.display = 'flex'
+    startTime = Date.now();
+    remainingTime = duration;
+    viewer.classList.remove("hidden")
+
     currentStory = stories[index];
     viewerImage.src = stories[index].image;
+    currentStory.seen = true;
 
+    localStorage.setItem("stories", JSON.stringify(stories));
+    loadStories();
     clearTimeout(timer)
     startProgress();
 
@@ -175,7 +200,7 @@ function viewstory(index) {
         } else {
             closeStory();
         }
-    }, 3000);
+    }, remainingTime);
 
 }
 
@@ -202,7 +227,7 @@ nextStory.onclick = () => {
 
 // remove story after 24h
 function time24h(story) {
-    let time = Date.now();
+    const time = Date.now();
     let storytime = story.id
     let finish = (time - storytime) / (60 * 1000)
     let end = 24 * 60
@@ -213,13 +238,32 @@ function time24h(story) {
 
         localStorage.setItem("stories", JSON.stringify(stories));
     }
+}
+setInterval(loadStories, 60000);
 
 
+function pauseStory() {
+    clearTimeout(timer)
+    const elapsedTime = Date.now() - startTime;
+    remainingTime -= elapsedTime;
+    progress.style.animationPlayState = "paused";
 }
 
+function resumeStory() {
+    progress.style.animationPlayState = "running";
+    startTime = Date.now();
 
+    timer = setTimeout(() => {
+        if (displayindex < stories.length - 1) {
+            viewstory(displayindex + 1);
+        } else {
+            closeStory();
+        }
+    }, remainingTime);
+}
 
-
+viewer.addEventListener("mousedown", pauseStory);
+viewer.addEventListener("mouseup", resumeStory);
 
 
 

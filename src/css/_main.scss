@@ -1,14 +1,18 @@
 @use './variables';
 
 
+body {
+    background-color: variables.$bg-main ;
+
+}
+
 .card-container {
     padding: 1rem 1.5rem;
     margin: 1rem auto;
     background-color: variables.$bg-main ;
-    width: 100%;
     max-width: 1500px;
     border-radius: 6px;
-    height: 100vh;
+    min-height: 100vh;
 
 
 
@@ -23,13 +27,20 @@
 
     .stories-card {
         background: variables.$bg-white;
-        border-radius: 12px;
-        padding: 16px;
+        border-radius: 20px;
+        padding: 24px;
         margin-bottom: 32px;
-        box-shadow: 0 4px 4px black;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
         display: flex;
         gap: 5px;
         overflow-y: scroll;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+
+
 
         .story-item {
             display: inline-block;
@@ -41,14 +52,18 @@
                 width: 72px;
                 height: 72px;
                 border-radius: 50%;
-                padding: 2px;
                 border: 4px solid variables.$bg-circle;
+                padding: 3px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 cursor: pointer;
                 margin-bottom: 10px;
                 transition: 0.3s;
+
+                &.seen {
+                    border-color: gray;
+                }
 
                 .story-icon {
                     font-weight: 800;
@@ -63,7 +78,8 @@
                 }
 
                 &:hover {
-                    transform: scale(1.2);
+                    transform: translateY(-5px);
+                    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
                 }
 
 
@@ -87,13 +103,14 @@
         height: 100%;
         background: variables.$bg-light-dark;
         backdrop-filter: blur(20px);
-
-        display: none;
+        display: flex;
         align-items: center;
         justify-content: center;
         z-index: 1;
 
-
+        &.hidden {
+            display: none;
+        }
 
         .progressbar-container {
             position: absolute;
@@ -113,13 +130,14 @@
                 border-radius: 2px;
                 transition: 0.1s linear;
 
-
+                &.animate {
+                    animation: storyProgress 3s linear forwards;
+                }
 
             }
 
 
         }
-
 
 
         .close-viewer {
@@ -131,7 +149,7 @@
             border-radius: 5px;
             padding: 5px;
             color: variables.$bg-black;
-            font-size: 22px;
+            font-size: 1.3rem;
             cursor: pointer;
             z-index: 2;
             transition: 0.3s;
@@ -149,13 +167,15 @@
             left: 30px;
             background: variables.$bg-white;
             border: none;
-            border-radius: 5px;
             padding: 5px;
             color: variables.$bg-black;
-            font-size: 22px;
+            font-size: 0.9rem;
             cursor: pointer;
             z-index: 2;
             transition: 0.3s;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
 
             &:hover {
                 background: #dc3545;
@@ -172,19 +192,18 @@
             object-fit: contain;
             border-radius: 8px;
             z-index: 2;
-
         }
 
 
         .viewer-control {
             position: absolute;
             bottom: 0;
-            height: 90%;
+            height: 80%;
             width: 15%;
             display: flex;
             align-items: center;
             color: transparent;
-            font-size: 28px;
+            font-size: 1.7rem;
             cursor: pointer;
             user-select: none;
             z-index: 3;
@@ -204,7 +223,28 @@
 
     }
 
+    .app-content {
+        margin: 2rem 4rem;
+        padding: 1.75rem 2rem;
+        background: variables.$bg-white;
+        border-radius: 18px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        border-left: 5px solid variables.$bg-circle;
 
+        h2 {
+            margin: 0 0 1rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: variables.$bg-black;
+        }
+
+        p {
+            margin: 0.8rem 0;
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #555;
+        }
+    }
 
 
 
