@@ -1,0 +1,29 @@
+@media (max-width: 480px) {
+    .stories {
+
+        &__card {
+
+            flex-direction: column;
+            overflow-x: scroll;
+            height: 200px;
+
+        }
+
+        &__item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0;
+            text-align: left;
+        }
+
+        &__label {
+            font-size: 1.3rem;
+        }
+
+    }
+
+    .app__content {
+        margin: 1rem 2rem;
+    }
+}

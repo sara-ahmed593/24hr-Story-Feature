@@ -4,57 +4,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="A simple Stories app where you can add, view, navigate, and delete stories. Stories automatically disappear after 24 hours.">
+
+    <meta name="keywords" content="stories, story app, add story, view stories, image stories, 24-hour stories">
+
     <title>Stories</title>
     <link rel="stylesheet" href="./src/css/style.css">
 </head>
 
 <body>
     <main>
-        <div class="card-container">
-            <h1 class="title">Stories</h1>
+        <div class="stories">
+            <h1 class="stories__title">Stories</h1>
 
 
 
-            <div class="stories-card">
+            <section class="stories__card">
 
-                <div class="story-item">
-                    <div class="story-circle" id="add-btn">
-                        <div class="story-icon">+</div>
+                <div class="stories__item">
+                    <div class="stories__add-btn" id="add-btn">
+                        <div class="stories__add-icon">+</div>
                         <input type="file" id="file-input" accept="image/*" hidden />
                     </div>
-                    <div class="story-label">Add Story</div>
+                    <div class="stories__label">Add Story</div>
 
                 </div>
 
-            </div>
+            </section>
 
 
-            <div id="story-viewer" class="story-viewer hidden">
-                <div id="progress-bar-container" class="progressbar-container">
-                    <div id="progress-bar" class="progress-bar"></div>
+            <section id="story-viewer" class="story-viewer hidden">
+                <div id="progress-bar-container" class="story-viewer__progress-container">
+                    <div id="progress-bar" class="story-viewer__progress-bar"></div>
                 </div>
 
-                <button id="close-viewer" class="close-viewer">
+                <button id="close-viewer" class="story-viewer__close-viewer">
                     X
                 </button>
-                <button id="delete-btn" class="delete-btn">
+                <button id="delete-btn" class="story-viewer__delete-btn">
                     Delete
                 </button>
 
-                <div class="viewer-control prev-story" id="prev-story"> </div>
+                <div class="story-viewer__control story-viewer__control-prev-story" id="prev-story"> </div>
 
-                <img id="viewer-image" class="viewer-image" src="" alt="Story">
+                <img id="viewer-image" class="story-viewer__image" src="" alt="Story">
 
-                <div class="viewer-control next-story" id="next-story"> </div>
-            </div>
+                <div class="story-viewer__control story-viewer__control-next-story" id="next-story"> </div>
+            </section>
 
-            <section class="app-content">
-                <h2>How to use</h2>
+            <section class="app__content">
+                <h2 class="app-__content-title">How to use</h2>
 
-                <p>Welcome to the Stories App.</p>
-                <p>Add a story using the "+" button above. Click on a story circle to view.</p>
-                <p>Stories automatically disappear after 24 hours.</p>
-                <p>Inside the story viewer, you can click on edges to navigate, or click the Delete Button to
+                <p class="app__content-text">Welcome to the Stories App.</p>
+                <p class="app__content-text">Add a story using the "+" button above. Click on a story circle to view.
+                </p>
+                <p class="app__content-text">Stories automatically disappear after 24 hours.</p>
+                <p class="app__content-text">Inside the story viewer, you can click on edges to navigate, or click the
+                    Delete Button to
                     remove.
                 </p>
             </section>
@@ -64,17 +71,7 @@
 
 
     </main>
-    <script src="./src/js/script.js"></script>
+    <script type="module" src="./src/js/script.js"></script>
 </body>
 
 </html>
-
-
-<!-- 
-Welcome to the Stories App!
-
-Add a story using the "+" button above. Click on a story circle to view.
-
-Stories automatically disappear after 24 hours.
-
-Inside the story viewer, you can swipe or click on edges to navigate, or click the trash icon to delete. -->
