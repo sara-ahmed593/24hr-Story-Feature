@@ -1,4 +1,4 @@
-import { progress, viewer, nextStory, prevStory, viewerImage } from "./dom.js"
+import { viewer, nextStory, prevStory, viewerImage, progressContainer } from "./dom.js"
 import { stories, loadStories } from "./helper.js";
 
 let timer;
@@ -18,14 +18,7 @@ export function closeStory() {
     clearTimeout(timer);
 }
 
-// progress bar
-export function startProgress() {
 
-    progress.classList.remove("animate");
-    progress.offsetWidth;
-    progress.classList.add("animate");
-
-}
 
 // view story
 let displayindex = 0;
@@ -40,9 +33,12 @@ export function viewstory(index) {
     currentStory.seen = true;
 
     localStorage.setItem("stories", JSON.stringify(stories));
-    loadStories();
+
     clearTimeout(timer)
-    startProgress();
+    createProgressBars();
+    updateProgressBars();
+    loadStories();
+
 
     timer = setTimeout(() => {
         if (displayindex < stories.length - 1) {
@@ -81,12 +77,20 @@ function pauseStory() {
     clearTimeout(timer)
     const elapsedTime = Date.now() - startTime;
     remainingTime -= elapsedTime;
-    progress.style.animationPlayState = "paused";
+
+    const activeProgress = getActiveProgressBar();
+
+    if (activeProgress) {
+        activeProgress.classList.add("paused");
+    }
 }
 
 function resumeStory() {
-    progress.style.animationPlayState = "running";
-    startTime = Date.now();
+    const activeProgress = getActiveProgressBar();
+
+    if (activeProgress) {
+        activeProgress.classList.remove("paused");
+    } startTime = Date.now();
 
     timer = setTimeout(() => {
         if (displayindex < stories.length - 1) {
@@ -99,4 +103,70 @@ function resumeStory() {
 
 viewer.addEventListener("mousedown", pauseStory);
 viewer.addEventListener("mouseup", resumeStory);
+
+function createProgressBars() {
+    progressContainer.innerHTML = "";
+
+    stories.forEach(() => {
+        const progress = document.createElement("div");
+
+        progress.classList.add("story-viewer__progress-bar");
+
+        progressContainer.appendChild(progress);
+    });
+}
+
+
+function updateProgressBars() {
+    const bars = document.querySelectorAll(".story-viewer__progress-bar");
+
+    bars.forEach((bar, index) => {
+
+        bar.classList.remove("active");
+
+        if (index < displayindex) {
+            bar.classList.add("completed");
+        }
+
+        else if (index === displayindex) {
+            bar.classList.add("active");
+        }
+    });
+}
+
+
+function getActiveProgressBar() {
+    return document.querySelector(".story-viewer__progress-bar.active");
+}
+let touchstartX = 0;
+let touchendX = 0;
+
+function checkDirection() {
+    if (touchendX < touchstartX) {
+        if (displayindex < stories.length - 1) {
+            viewstory(displayindex + 1);
+        }
+        else {
+            closeStory()
+        }
+    }
+    if (touchendX > touchstartX) {
+        if (displayindex > 0) {
+            viewstory(displayindex - 1);
+        }
+        else {
+            closeStory()
+        }
+    }
+}
+
+
+viewer.addEventListener("touchstart", (e) => {
+    touchstartX = e.changedTouches[0].screenX;
+});
+
+viewer.addEventListener("touchend", (e) => {
+    touchendX = e.changedTouches[0].screenX;
+    checkDirection();
+});
 

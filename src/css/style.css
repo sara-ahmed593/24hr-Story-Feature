@@ -122,20 +122,34 @@ body {
   left: 12px;
   right: 12px;
   height: 4px;
-  background: #727070;
   border-radius: 2px;
   overflow: hidden;
   z-index: 2;
+  display: flex;
+  gap: 10px;
 }
 .story-viewer__progress-bar {
+  flex: 1;
   height: 100%;
-  width: 0%;
-  background: #fff;
+  background: #727070;
   border-radius: 2px;
   transition: 0.1s linear;
 }
-.story-viewer__progress-bar.animate {
+.story-viewer__progress-bar::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 100%;
+  background: #fff;
+}
+.story-viewer__progress-bar.completed::after {
+  width: 100%;
+}
+.story-viewer__progress-bar.active::after {
   animation: storyProgress 3s linear forwards;
+}
+.story-viewer__progress-bar.paused::after {
+  animation-play-state: paused;
 }
 .story-viewer__close-viewer {
   position: absolute;

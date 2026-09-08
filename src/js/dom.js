@@ -5,7 +5,7 @@ export const prevStory = document.getElementById('prev-story');
 export const viewer = document.getElementById("story-viewer");
 export const viewerImage = document.getElementById("viewer-image");
 export const deleteBtn = document.getElementById("delete-btn");
-export const progress = document.getElementById('progress-bar');
+export const progressContainer = document.getElementById('progress-bar-container');
 export const closeBtn = document.getElementById("close-viewer");
 const storiesCard = document.querySelector(".stories__card");
 

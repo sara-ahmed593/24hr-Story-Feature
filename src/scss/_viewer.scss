@@ -23,23 +23,44 @@
         left: 12px;
         right: 12px;
         height: 4px;
-        background: variables.$bg-progress;
         border-radius: 2px;
         overflow: hidden;
         z-index: 2;
+        display: flex;
+        gap: 10px;
 
     }
 
     &__progress-bar {
+        flex: 1;
         height: 100%;
-        width: 0%;
-        background: variables.$bg-white;
+        background: variables.$bg-progress;
         border-radius: 2px;
         transition: 0.1s linear;
 
-        &.animate {
+        &::after {
+            content: "";
+
+            display: block;
+
+            width: 0;
+            height: 100%;
+
+            background: variables.$bg-white;
+        }
+
+        &.completed::after {
+            width: 100%;
+        }
+
+        &.active::after {
             animation: storyProgress 3s linear forwards;
         }
+
+        &.paused::after {
+            animation-play-state: paused;
+        }
+
 
     }
 
