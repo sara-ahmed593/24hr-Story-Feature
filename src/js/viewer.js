@@ -52,8 +52,8 @@ export function viewstory(index) {
 }
 
 
-//navigate to previous story
-prevStory.onclick = () => {
+//navigate to next story
+nextStory.onclick = (e) => {
     if (displayindex < stories.length - 1) {
         viewstory(displayindex + 1);
     }
@@ -62,8 +62,8 @@ prevStory.onclick = () => {
     }
 };
 
-//navigate to next story
-nextStory.onclick = () => {
+//navigate to previous story
+prevStory.onclick = () => {
     if (displayindex > 0) {
         viewstory(displayindex - 1);
     }

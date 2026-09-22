@@ -7,6 +7,7 @@ export const viewerImage = document.getElementById("viewer-image");
 export const deleteBtn = document.getElementById("delete-btn");
 export const progressContainer = document.getElementById('progress-bar-container');
 export const closeBtn = document.getElementById("close-viewer");
+export const storyEvent = new EventTarget();
 const storiesCard = document.querySelector(".stories__card");
 
 

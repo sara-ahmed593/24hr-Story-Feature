@@ -1,7 +1,11 @@
-import { createStoryElement } from "./dom.js";
-import { view } from "./script.js";
+import { createStoryElement, storyEvent } from "./dom.js";
 
 export let stories = JSON.parse(localStorage.getItem("stories")) || [];
+
+export let viewHandler = null;
+function setViewHandler(fn) {
+    viewHandler = fn;
+}
 
 // load stories after refresh
 export function loadStories() {
@@ -12,7 +16,9 @@ export function loadStories() {
     stories.forEach(story => {
         time24h(story)
         createStoryElement(story, () => {
-            view(story)
+            setViewHandler(story)
+
+            storyEvent.dispatchEvent(new Event("storyClicked"));
         });
     }
     )
