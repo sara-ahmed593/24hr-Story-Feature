@@ -1,41 +1,22 @@
-import { createStoryElement, storyEvent } from "./dom.js";
 
 export let stories = JSON.parse(localStorage.getItem("stories")) || [];
 
-export let viewHandler = null;
-function setViewHandler(fn) {
-    viewHandler = fn;
-}
 
-// load stories after refresh
-export function loadStories() {
-    const cardReload = document.querySelectorAll(".stories__item:not(:first-child)")
+// file validation
+export function validateImage(file, width, height) {
 
-    cardReload.forEach(item => item.remove());
-
-    stories.forEach(story => {
-        time24h(story)
-        createStoryElement(story, () => {
-            setViewHandler(story)
-
-            storyEvent.dispatchEvent(new Event("storyClicked"));
-        });
+    if (!file.type.match("image/*")) {
+        alert("Please select an image file (JPEG, PNG, etc).");
+        return false;
     }
-    )
-}
 
-
-// remove story after 24h
-function time24h(story) {
-    const time = Date.now();
-    let storytime = story.id
-    let finish = (time - storytime) / (60 * 1000)
-    let end = 24 * 60
-    let remainingTime = end - finish
-
-    if (remainingTime <= 0) {
-        stories = stories.filter(item => item.id !== story.id);
-
-        localStorage.setItem("stories", JSON.stringify(stories));
+    if (file.size > 5 * 1024 * 1024) {
+        alert("Image size should be less than 5MB.");
+        return false;
     }
+    if (width > 1080 || height > 1920) {
+        alert("Image dimensions must not exceed 1080 × 1920 pixels.");
+        return false;
+    }
+    return true;
 }

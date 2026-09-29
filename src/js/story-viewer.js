@@ -1,5 +1,12 @@
-import { viewer, nextStory, prevStory, viewerImage, progressContainer } from "./dom.js"
-import { stories, loadStories } from "./helper.js";
+import { viewer, nextStory, prevStory, viewerImage, progressContainer, deleteBtn } from "./story-dom.js"
+import { stories } from "./helper.js";
+
+let StoriesChanged;
+
+export function setStories(sc) {
+    StoriesChanged = sc;
+}
+
 
 let timer;
 let startTime;
@@ -37,8 +44,7 @@ export function viewstory(index) {
     clearTimeout(timer)
     createProgressBars();
     updateProgressBars();
-    loadStories();
-
+    StoriesChanged();
 
     timer = setTimeout(() => {
         if (displayindex < stories.length - 1) {
@@ -169,4 +175,22 @@ viewer.addEventListener("touchend", (e) => {
     touchendX = e.changedTouches[0].screenX;
     checkDirection();
 });
+
+// delete story
+
+deleteBtn.addEventListener("click", () => {
+    let currentStory = getCurrentStory();
+    const index = stories.indexOf(currentStory);
+    if (index !== -1) {
+        stories.splice(index, 1);
+    }
+
+    localStorage.setItem("stories", JSON.stringify(stories));
+    closeStory()
+    StoriesChanged();
+    currentStory = null;
+
+
+});
+
 
