@@ -7,15 +7,16 @@ export const viewerImage = document.getElementById("viewer-image");
 export const deleteBtn = document.getElementById("delete-btn");
 export const progressContainer = document.getElementById('progress-bar-container');
 export const closeBtn = document.getElementById("close-viewer");
-export const storyEvent = new EventTarget();
-const storiesCard = document.querySelector(".stories__card");
+export const storiesContainer = document.getElementById("stories__container");
 
 
 
 // create story element
-export function createStoryElement(story, storyClick) {
+export function createStoryElement(story) {
     const storyItem = document.createElement("div");
     storyItem.className = "stories__item";
+
+    storyItem.dataset.id = story.id;
 
     const storyCircle = document.createElement("div");
     storyCircle.classList.add("stories__add-btn");
@@ -35,8 +36,8 @@ export function createStoryElement(story, storyClick) {
     storyCircle.appendChild(img);
     storyItem.appendChild(storyCircle);
     storyItem.appendChild(label);
-    storiesCard.appendChild(storyItem);
+    storiesContainer.appendChild(storyItem);
 
-    storyCircle.addEventListener("click", storyClick);
+
 
 }

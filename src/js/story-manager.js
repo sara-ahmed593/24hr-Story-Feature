@@ -1,7 +1,18 @@
-import { createStoryElement } from "./story-dom.js"
-import { stories } from "./helper.js";
+import { createStoryElement, storiesContainer } from "./story-dom.js"
 import { viewstory, setStories } from "./story-viewer.js";
 
+export let stories = JSON.parse(localStorage.getItem("stories")) || [];
+
+
+storiesContainer.addEventListener("click", (e) => {
+    const card = e.target.closest(".stories__item");
+    if (!card) { return }
+
+    const id = Number(card.dataset.id)
+    const index = stories.findIndex(story => story.id === id);
+    viewstory(index, stories)
+
+})
 
 //save story in local storage
 function saveStory(story) {
@@ -19,25 +30,32 @@ export function addStory(image, time, id) {
 
     };
 
-    createStoryElement(story, () => {
-        viewstory(stories.indexOf(story))
-    });
+    createStoryElement(story);
     saveStory(story);
 }
 
 // load stories after refresh
 export function loadStories() {
-    const cardReload = document.querySelectorAll(".stories__item:not(:first-child)")
 
-    cardReload.forEach(item => item.remove());
+    storiesContainer.replaceChildren();
+
+    const newStoriesList = stories.filter(story => {
+        return time24h(story)
+    });
+
+    if (newStoriesList.length !== stories.length) {
+        stories.length = 0;
+
+        newStoriesList.forEach(story => {
+            stories.push(story);
+        });
+        localStorage.setItem("stories", JSON.stringify(stories));
+    }
+
 
     stories.forEach(story => {
-        time24h(story)
-        createStoryElement(story, () => {
-            viewstory(stories.indexOf(story))
-        });
-    }
-    )
+        createStoryElement(story);
+    });
 }
 
 
@@ -50,10 +68,9 @@ function time24h(story) {
     let remainingTime = end - finish
 
     if (remainingTime <= 0) {
-        stories = stories.filter(item => item.id !== story.id);
-
-        localStorage.setItem("stories", JSON.stringify(stories));
+        return false;
     }
+    return true;
 }
 setStories(loadStories);
 

@@ -1,7 +1,6 @@
-import { addStoryBtn, fileInput, closeBtn } from "./story-dom.js"
-import { closeStory, viewstory } from "./story-viewer.js";
+import { addStoryBtn, fileInput } from "./story-dom.js"
 import { addStory, loadStories } from "./story-manager.js";
-import { stories, validateImage } from "./helper.js";
+import { validateImage } from "./helper.js";
 
 
 //add button
@@ -48,15 +47,9 @@ fileInput.addEventListener("change", (e) => {
 
 });
 
-//close story viewer
-closeBtn.addEventListener("click", closeStory)
 
-setInterval(() => { loadStories(view); }, 60000);
 
-export function view(story) {
+setInterval(() => { loadStories(); }, 60000);
 
-    viewstory(stories.indexOf(story));
-}
 
-loadStories(view);
-
+loadStories();

@@ -1,5 +1,4 @@
 
-export let stories = JSON.parse(localStorage.getItem("stories")) || [];
 
 
 // file validation

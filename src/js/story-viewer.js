@@ -1,24 +1,27 @@
-import { viewer, nextStory, prevStory, viewerImage, progressContainer, deleteBtn } from "./story-dom.js"
-import { stories } from "./helper.js";
+import { viewer, nextStory, prevStory, viewerImage, progressContainer, deleteBtn, closeBtn } from "./story-dom.js"
+
+let currentStoriesList = [];
 
 let StoriesChanged;
+let timer;
+let startTime;
+const duration = 3000;
+let currentStory = null;
+let remainingTime = duration;
+
+let displayindex = 0;
+let touchstartX = 0;
+let touchendX = 0;
 
 export function setStories(sc) {
     StoriesChanged = sc;
 }
 
 
-let timer;
-let startTime;
-const duration = 3000;
-let currentStory = null;
-
-
 export function getCurrentStory() {
     return currentStory;
 }
 
-let remainingTime = duration;
 
 export function closeStory() {
     viewer.classList.add("hidden")
@@ -26,10 +29,10 @@ export function closeStory() {
 }
 
 
-
 // view story
-let displayindex = 0;
-export function viewstory(index) {
+
+export function viewstory(index, stories) {
+    currentStoriesList = stories;
     displayindex = index;
     startTime = Date.now();
     remainingTime = duration;
@@ -42,13 +45,13 @@ export function viewstory(index) {
     localStorage.setItem("stories", JSON.stringify(stories));
 
     clearTimeout(timer)
-    createProgressBars();
+    createProgressBars(stories);
     updateProgressBars();
     StoriesChanged();
 
     timer = setTimeout(() => {
         if (displayindex < stories.length - 1) {
-            viewstory(displayindex + 1);
+            viewstory(displayindex + 1, stories);
 
         } else {
             closeStory();
@@ -60,8 +63,8 @@ export function viewstory(index) {
 
 //navigate to next story
 nextStory.onclick = (e) => {
-    if (displayindex < stories.length - 1) {
-        viewstory(displayindex + 1);
+    if (displayindex < currentStoriesList.length - 1) {
+        viewstory(displayindex + 1, currentStoriesList);
     }
     else {
         closeStory()
@@ -71,7 +74,7 @@ nextStory.onclick = (e) => {
 //navigate to previous story
 prevStory.onclick = () => {
     if (displayindex > 0) {
-        viewstory(displayindex - 1);
+        viewstory(displayindex - 1, currentStoriesList);
     }
     else {
         closeStory()
@@ -99,8 +102,8 @@ function resumeStory() {
     } startTime = Date.now();
 
     timer = setTimeout(() => {
-        if (displayindex < stories.length - 1) {
-            viewstory(displayindex + 1);
+        if (displayindex < currentStoriesList.length - 1) {
+            viewstory(displayindex + 1, currentStoriesList);
         } else {
             closeStory();
         }
@@ -110,7 +113,7 @@ function resumeStory() {
 viewer.addEventListener("mousedown", pauseStory);
 viewer.addEventListener("mouseup", resumeStory);
 
-function createProgressBars() {
+function createProgressBars(stories) {
     progressContainer.innerHTML = "";
 
     stories.forEach(() => {
@@ -144,13 +147,12 @@ function updateProgressBars() {
 function getActiveProgressBar() {
     return document.querySelector(".story-viewer__progress-bar.active");
 }
-let touchstartX = 0;
-let touchendX = 0;
+
 
 function checkDirection() {
     if (touchendX < touchstartX) {
-        if (displayindex < stories.length - 1) {
-            viewstory(displayindex + 1);
+        if (displayindex < currentStoriesList.length - 1) {
+            viewstory(displayindex + 1, currentStoriesList);
         }
         else {
             closeStory()
@@ -158,7 +160,7 @@ function checkDirection() {
     }
     if (touchendX > touchstartX) {
         if (displayindex > 0) {
-            viewstory(displayindex - 1);
+            viewstory(displayindex - 1, currentStoriesList);
         }
         else {
             closeStory()
@@ -180,12 +182,12 @@ viewer.addEventListener("touchend", (e) => {
 
 deleteBtn.addEventListener("click", () => {
     let currentStory = getCurrentStory();
-    const index = stories.indexOf(currentStory);
+    const index = currentStoriesList.indexOf(currentStory);
     if (index !== -1) {
-        stories.splice(index, 1);
+        currentStoriesList.splice(index, 1);
     }
 
-    localStorage.setItem("stories", JSON.stringify(stories));
+    localStorage.setItem("stories", JSON.stringify(currentStoriesList));
     closeStory()
     StoriesChanged();
     currentStory = null;
@@ -194,3 +196,5 @@ deleteBtn.addEventListener("click", () => {
 });
 
 
+//close story viewer
+closeBtn.addEventListener("click", closeStory)
